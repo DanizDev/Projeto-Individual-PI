@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Projeto C-137</title>
+
+    <script src="./js/sessao.js"></script>
+
+    <link rel="stylesheet" href="./css/estilo.css">
+    <link rel="icon" href="./assets/icon/Icon1.png">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+</head>
+
+<body>
+    <div class="header">
+      <div class="container">
+        <h1 class="titulo">Projeto C-137</h1>
+        <ul class="navbar">
+          <li class="agora">
+            <a href="#">Personagens</a>
+          </li>
+          <li>
+            <a href="simulador.html">Impactos</a>
+          </li>
+          <li>|</li>
+          <li>
+            <a href="login.html">Login</a>
+          </li>
+          <li>
+            <a href="cadastro.html">Cadastro</a>
+          </li>
+         
+        </ul>
+      </div>
+    </div>
+  
+    <div class="banner">
+
+      <video autoplay muted loop class="video-bg">
+        <source src="./assets/icon/videoGalaxia.mp4" type="video/mp4">
+      </video>
+
+      <div class="container">
+
+        <h1>
+          <span id="texto-titulo"></span>
+          <span class="cursor" id="cursor-titulo"></span>
+        </h1>
+        <p>
+          <span id="texto-digitado"></span>
+          <span class="cursor"></span>
+        </p>
+
+        <nav>
+          <button class="btn-explorar"><a href="##"> Explorar Projeto </a></button>
+        </nav>
+      </div>
+    </div>
+  
+    <div class="social">
+      <div class="container">
+        <div class="boxes">
+          <div class="box">
+            <img src="assets/imgs/planet-earth_color.png">
+            <h4>Missão</h4>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et, quas cupiditate asperiores provident magnam
+              vitae illum iusto fugiat atque deleniti nulla sed iure suscipit, laborum, aliquid accusantium cum dicta
+              minima.</p>
+          </div>
+          <div class="box">
+            <img src="assets/imgs/lightbulb_color.png">
+            <h4>Visão</h4>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et, quas cupiditate asperiores provident magnam
+              vitae illum iusto fugiat atque deleniti nulla sed iure suscipit, laborum, aliquid accusantium cum dicta
+              minima.</p>
+          </div>
+          <div class="box">
+            <img src="assets/imgs/growth_color.png">
+            <h4>Valores</h4>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et, quas cupiditate asperiores provident magnam
+              vitae illum iusto fugiat atque deleniti nulla sed iure suscipit, laborum, aliquid accusantium cum dicta
+              minima.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="footer">
+      <div class="container">
+        <h4>Feito com amor por aluno &hearts; SPTech &copy; 2023</h4>
+        <span class="version">v1.0.0</span>
+      </div>
+    </div>
+
+  <script>
+
+  const titulo = 'Projeto C-137';
+  const frases = [
+    'Muito além de uma animação.',
+  ];
+
+  let fraseAtual = 0;
+  let charAtual = 0;
+  let apagando = false;
+
+  const elTitulo = document.getElementById('texto-titulo');
+  const elFrase = document.getElementById('texto-digitado');
+
+  function digitarFrase() {
+    const frase = frases[fraseAtual];
+
+    if (!apagando) {
+      elFrase.textContent = frase.substring(0, charAtual + 1);
+      charAtual++;
+      if (charAtual === frase.length) {
+        apagando = true;
+        setTimeout(digitarFrase, 1800);
+        return;
+      }
+    } else {
+      elFrase.textContent = frase.substring(0, charAtual - 1);
+      charAtual--;
+      if (charAtual === 0) {
+        apagando = false;
+        fraseAtual = (fraseAtual + 1) % frases.length;
+      }
+    }
+
+    setTimeout(digitarFrase, apagando ? 50 : 80);
+  }
+
+  function digitarTitulo() {
+    if (charAtual < titulo.length) {
+      elTitulo.textContent += titulo[charAtual];
+      charAtual++;
+      setTimeout(digitarTitulo, 100);
+    } else {
+      document.getElementById('cursor-titulo').style.display = 'none';
+      charAtual = 0;
+      setTimeout(digitarFrase, 400); /* pausa antes de começar a frase */
+    }
+  }
+
+  digitarTitulo();
+
+</script>
+ 
+  </body>
+
+</html>
