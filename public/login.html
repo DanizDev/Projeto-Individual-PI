@@ -6,28 +6,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AquaTech | Login</title>
+    <title>Projeto C-137 | Login</title>
 
     <script src="./js/sessao.js"></script>
 
     <link rel="stylesheet" href="./css/estilo.css">
-    <link rel="icon" href="./assets/icon/favicon2.ico">
+    <link rel="icon" href="./assets/icon/Icon1.jpeg">
     <link rel="preconnect" href="https://fonts.gstatic.com">
 </head>
 
 <body>
-
+<canvas id="space-bg"></canvas>
     <!--Header-->
 
     <div class="header">
         <div class="container">
-            <h1 class="titulo">AquaTech</h1>
+            <h1 class="titulo">Projeto C-137</h1>
             <ul class="navbar">
                 <li>
                     <a href="index.html">Inicial</a>
                 </li>
                 <li>
-                    <a href="simulador.html">Simulador</a>
+                    <a href="simulador.html">Personagens</a>
+                </li>
+                <li>
+                    <a href="simulador.html">impactos</a>
                 </li>
                 <li>|</li>
                 <li class="agora">
@@ -71,19 +74,79 @@
         </div>
     </div>
 
-    <!--footer inicio-->
-    <div class="footer">
-        <div class="container">
-            <h4>Feito com amor por aluno &hearts; SPTech &copy; 2023</h4>
-            <span class="version">v1.0.0</span>
-        </div>
-    </div>
-    <!--footer fim-->
+
 
 </body>
 
 </html>
+<script>
+ const canvas = document.getElementById('space-bg');
+const pincel = canvas.getContext('2d');
 
+const QUANTIDADE_ESTRELAS = 800;
+const listaEstrelas = [];
+
+function ajustarTamanho() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', ajustarTamanho);
+ajustarTamanho();
+
+function criarEstrela() {
+  return {
+    x:          (Math.random() - 0.5) * canvas.width  * 2,
+    y:          (Math.random() - 0.5) * canvas.height * 2,
+    profundidade:         Math.random() * canvas.width,
+    profundidadeAnterior: 0
+  };
+}
+
+for (let i = 0; i < QUANTIDADE_ESTRELAS; i++) {
+  const estrela = criarEstrela();
+  estrela.profundidadeAnterior = estrela.profundidade;
+  listaEstrelas.push(estrela);
+}
+
+function animar() {
+  pincel.fillStyle = 'rgba(0, 0, 0, 0.25)';
+  pincel.fillRect(0, 0, canvas.width, canvas.height);
+
+  const centroX = canvas.width  / 2;
+  const centroY = canvas.height / 2;
+
+  for (let i = 0; i < QUANTIDADE_ESTRELAS; i++) {
+    const estrela = listaEstrelas[i];
+
+    estrela.profundidadeAnterior = estrela.profundidade;
+    estrela.profundidade -= 4;
+
+    if (estrela.profundidade <= 0) {
+      Object.assign(estrela, criarEstrela());
+      estrela.profundidadeAnterior = estrela.profundidade;
+      continue;
+    }
+
+    const telaPosAtualX = (estrela.x / estrela.profundidade)         * canvas.width  + centroX;
+    const telaPosAtualY = (estrela.y / estrela.profundidade)         * canvas.height + centroY;
+    const telaPosAnteriorX = (estrela.x / estrela.profundidadeAnterior) * canvas.width  + centroX;
+    const telaPosAnteriorY = (estrela.y / estrela.profundidadeAnterior) * canvas.height + centroY;
+
+    const proximidade = 1 - estrela.profundidade / canvas.width;
+
+    pincel.beginPath();
+    pincel.moveTo(telaPosAnteriorX, telaPosAnteriorY);
+    pincel.lineTo(telaPosAtualX,    telaPosAtualY);
+    pincel.strokeStyle = `rgba(${Math.floor(proximidade * 255)}, ${Math.floor(proximidade * 217 + 40)}, 255, ${proximidade * 0.9 + 0.1})`;
+    pincel.lineWidth   = Math.max(0.4, proximidade * 3.5);
+    pincel.stroke();
+  }
+
+  requestAnimationFrame(animar);
+}
+
+animar();
+</script>
 <script>
 
 
