@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" />
 </head>
 
-
+<body>
   <canvas id="space-bg"></canvas>
   <!--header inicio-->
   <div class="header">
@@ -172,23 +172,6 @@ animar();
 
 <script>
 
-  // Array para armazenar empresas cadastradas para validação de código de ativação 
-  let listaEmpresasCadastradas = [];
-
-  var checkSim = document.getElementById('checkboxSim');
-  var checkNao = document.getElementById('checkboxNao');
-
-    checkSim.addEventListener('change', function(){
-      if(this.checked){
-        checkNao.checked = false;
-      }
-    });
-
-    checkNao.addEventListener('change', function(){
-      if(this.checked){
-        checkSim.checked = false;
-      }
-    });
   function cadastrar() {
     // aguardar();
 
@@ -267,4 +250,21 @@ animar();
   function sumirMensagem() {
     cardErro.style.display = "none";
   }
+</script>
+
+<script>
+  var checkSim = document.getElementById('checkboxSim');
+  var checkNao = document.getElementById('checkboxNao');
+
+    checkSim.addEventListener('change', function(){
+      if(this.checked){
+        checkNao.checked = false;
+      }
+    });
+
+    checkNao.addEventListener('change', function(){
+      if(this.checked){
+        checkSim.checked = false;
+      }
+    });
 </script>
