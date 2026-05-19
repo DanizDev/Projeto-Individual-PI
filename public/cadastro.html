@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" />
 </head>
 
-<body onload="listar()">
+
   <canvas id="space-bg"></canvas>
   <!--header inicio-->
   <div class="header">
@@ -57,10 +57,7 @@
                          Para inserir mais um campo, copie uma das inputs abaixo.
                          Assim que inserir vá para o script abaixo.
                      -->
-          <div class="campo">
-            <span>Código de ativação:</span>
-            <input id="codigo_input" type="text" placeholder="Insira aqui seu código" />
-          </div>
+       
           <div class="campo">
             <span>Nome:</span>
             <input id="nome_input" type="text" placeholder="Seu nome" />
@@ -76,6 +73,18 @@
           <div class="campo">
             <span>Confirmação da Senha:</span>
             <input id="confirmacao_senha_input" type="password" placeholder="******" />
+          </div>
+          <div class="campo">
+            <span>Ja conhece a série?</span>
+            <div class="campo-checkbox">
+              <label >
+                <input type="checkbox" id="checkboxSim"> Sim
+              </label>  
+
+              <label>
+                <input type="checkbox" id="checkboxNao"> Não
+                </label>
+            </div>
           </div>
           <button class="botao" onclick="cadastrar()">Cadastrar</button>
         </div>
@@ -166,6 +175,20 @@ animar();
   // Array para armazenar empresas cadastradas para validação de código de ativação 
   let listaEmpresasCadastradas = [];
 
+  var checkSim = document.getElementById('checkboxSim');
+  var checkNao = document.getElementById('checkboxNao');
+
+    checkSim.addEventListener('change', function(){
+      if(this.checked){
+        checkNao.checked = false;
+      }
+    });
+
+    checkNao.addEventListener('change', function(){
+      if(this.checked){
+        checkSim.checked = false;
+      }
+    });
   function cadastrar() {
     // aguardar();
 
@@ -175,16 +198,18 @@ animar();
     var emailVar = email_input.value;
     var senhaVar = senha_input.value;
     var confirmacaoSenhaVar = confirmacao_senha_input.value;
-    var codigoVar = codigo_input.value;
-    var idEmpresaVincular
+    var checkSim = document.getElementById('checkboxSim').checked;
+    var checkNao = document.getElementById('checkboxNao').checked;
+   
 
+  
     // Verificando se há algum campo em branco
     if (
       nomeVar == "" ||
       emailVar == "" ||
       senhaVar == "" ||
       confirmacaoSenhaVar == "" ||
-      codigoVar == ""
+      (!checkSim && !checkNao)
     ) {
       cardErro.style.display = "block";
       mensagem_erro.innerHTML =
@@ -196,18 +221,6 @@ animar();
       setInterval(sumirMensagem, 5000);
     }
 
-    // Verificando se o código de ativação é de alguma empresa cadastrada
-    for (let i = 0; i < listaEmpresasCadastradas.length; i++) {
-      if (listaEmpresasCadastradas[i].codigo_ativacao == codigoVar) {
-        idEmpresaVincular = listaEmpresasCadastradas[i].id
-        console.log("Código de ativação válido.");
-        break;
-      } else {
-        cardErro.style.display = "block";
-        mensagem_erro.innerHTML = "(Mensagem de erro para código inválido)";
-        finalizarAguardar();
-      }
-    }
 
     // Enviando o valor da nova input
     fetch("/usuarios/cadastrar", {
@@ -221,7 +234,7 @@ animar();
         nomeServer: nomeVar,
         emailServer: emailVar,
         senhaServer: senhaVar,
-        idEmpresaVincularServer: idEmpresaVincular
+        conheceSerieServer: checkSim
       }),
     })
       .then(function (resposta) {
@@ -249,26 +262,6 @@ animar();
       });
 
     return false;
-  }
-
-  // Listando empresas cadastradas 
-  function listar() {
-    fetch("/empresas/listar", {
-      method: "GET",
-    })
-      .then(function (resposta) {
-        resposta.json().then((empresas) => {
-          empresas.forEach((empresa) => {
-            listaEmpresasCadastradas.push(empresa);
-
-            console.log("listaEmpresasCadastradas")
-            console.log(listaEmpresasCadastradas[0].codigo_ativacao)
-          });
-        });
-      })
-      .catch(function (resposta) {
-        console.log(`#ERRO: ${resposta}`);
-      });
   }
 
   function sumirMensagem() {
